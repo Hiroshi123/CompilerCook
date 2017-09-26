@@ -22,12 +22,18 @@ import MData.Parser.Int
 
 import MData.BNF.Json
 
-        
---jvalue            
-jvalue = object <|> array 
+------------------------------------------------------
+-- jvalue --
+
+jvalue = jobject <|> jarray <|> jelem
 
 jelem :: Parser JValue
 jelem = jbool <|> jstr <|> jnum
+
+------------------------------------------------------
+
+jbool :: Parser JValue
+jbool = bool >== (\x -> r' $ JBool x )
   
 jnum :: Parser JValue
 jnum  = num >== (\x -> r' $ JInt x )
@@ -35,69 +41,58 @@ jnum  = num >== (\x -> r' $ JInt x )
 jstr :: Parser JValue
 jstr  = str >== (\y -> r' $ JString y )
 
-jbool :: Parser JValue
-jbool = bool >== (\x -> r' $ JBool x )
-
-object :: Parser BS.ByteString --JValue
-object =
+jobject :: Parser JValue -- BS.ByteString --JValue
+jobject =
   
   (<->) **>
   char (BC.pack "{")
   **> (<->) **>
-  c
+  key_val
   **< (<->) **<
   char (BC.pack "}")
   **< (<->)
   
   
-array :: Parser BC.ByteString
-array =
+jarray :: Parser JValue
+jarray =
   
   (<->) **>
   char (BC.pack "[")
   **> (<->) **>
-  c
+  jvalue
   **< (<->) **<
   char (BC.pack "]")
   **< (<->)
   
   
-c :: Parser BS.ByteString
-c = 
   
-  char (BS.pack [34])
-  **> (<->) **>
-  many1 (satisfy letter)
-  **< (<->) **<
-  char (BS.pack [34])
-  **< (<->) **<
-  char (BS.pack [58])
-
-
-key =
-  key' >==
-  (\x -> key'' >== 
+key_val :: Parser JValue
+key_val =
+  
+  key >==
+  (\x -> val >== 
          (\y -> r' $ JObject [(x, y)] ) 
   )
   
   
-key' =
+key :: Parser BS.ByteString  
+key =
   (<->) **>
   str
   **< (<->) **<
   char (BS.pack [58])
   **< (<->)
-  
-key'' =
-  
-  (<->) **>
-  char (BS.pack [58])
-  **> (<->) **>
-  jnum --jvalue
-  **< (<->)
-  
-  
+
 --[34] is "\""
 --[58] is ":"
+
+
+val :: Parser JValue
+val =
+  
+  (<->) **>
+  jvalue
+  **< (<->)
+  
 
 

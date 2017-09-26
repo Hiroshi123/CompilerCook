@@ -36,6 +36,7 @@ instance ParserC Int where
             where toNum x y = x * 10 + y
                   
                   
+                  
   --many1 p = p >== (\x -> many p >== (\y -> r' $ foldl toNum 0 y) )
   --          where toNum x y = x * 10 + y
   
@@ -57,11 +58,33 @@ num'' =
   (\x -> r' (toNum x))
   where toNum x = fromIntegral $ BS.head x - 48
   
-num' :: Parser [Int]
-num' = coverList num'' <**> num' <|> r' []
   
-num :: Parser Int
-num = num' >== (\x -> r' $ foldl (\a y -> 10 * a + y) 0 x )
+--num' :: Parser [Int]
+num' = coverList num'' <**> num' <|> r' []  -- (<>) -- []
 
+--num :: Parser Int
+--num x = x >== (\x -> r' $ foldl (\a y -> 10 * a + y) 0 x )
+
+--hei "" = 0
+--hei x = foldl (\a y -> 10 * ( fromIntegral $ BS.head a - 48 ) + y ) 0 x
+
+--hei :: Num t => BC.ByteString -> t
+
+bsToNum :: BS.ByteString -> Int
+bsToNum a = bsToNum' (BS.length a - 1)  a
+
+bsToNum' :: Int -> BS.ByteString -> Int
+bsToNum' d x =
+  case d of
+    0  -> bs1ToNum x
+    _  -> (10 ^ d) * (bs1ToNum x) + b 
+      where b = bsToNum' (d-1) (BS.tail x)
+            
+            
+bs1ToNum :: BS.ByteString -> Int
+bs1ToNum x = fromIntegral ( BS.head x - 48 )
+             
+num :: Parser Int
+num = many1 ( satisfy (digit) ) >== (\x -> r' $ bsToNum x)
 
       

@@ -94,6 +94,16 @@ instance MPlus Parser where
 
 parse :: Parser a -> BS.ByteString -> [(a,BS.ByteString)]
 parse (Parser f) s = f s
+
+-- getEval  :: [(a,BS.ByteString)] -> [a]
+-- getEval s =
+--   case parse f s of
+--     [] -> 
+--     [] ->      
+      
+-- getState :: Parser a -> ByteString
+-- getState (Parser f) s = f s
+
   
 class ParserC a where
   --conjunction which  will let bind opeartion easy to be used. 
@@ -170,4 +180,5 @@ coverList x =
 -- inp = BS.getLine >>= (\x -> return $ parse (coverList escaped) x)
 
 
+  
 

@@ -53,7 +53,8 @@ stringL (BS.uncons -> Nothing) = r' [BS.empty]
                                  
 stringL s = (charL h) **> (stringL t) **> r' [s]
   where h = BS.singleton $ BS.head s
-        t = BS.tail s        
+        t = BS.tail s
+        
         
 --------------------------------------------
 
