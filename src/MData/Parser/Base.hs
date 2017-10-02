@@ -90,8 +90,22 @@ instance MPlus Parser where
   (<>) = Parser $ \_ -> []
   mmplus p q = Parser $ \x -> (parse p x) ++ (parse q x)
   
+  
 -- lifting
 
+mplusP p q = Parser $ \x -> (parse p x) ++ (parse q (BS.tail x))
+
+--p <|-> q = mplusP p q
+
+p <|-> q
+  = Parser
+    $ \cs -> 
+        case parse (p `mplusP` q) cs of
+          []     -> []
+          -- if its succeed, you will return soon. 
+          (x:xs) -> [x]
+          
+          
 parse :: Parser a -> BS.ByteString -> [(a,BS.ByteString)]
 parse (Parser f) s = f s
 
@@ -103,6 +117,8 @@ parse (Parser f) s = f s
       
 -- getState :: Parser a -> ByteString
 -- getState (Parser f) s = f s
+
+
 
   
 class ParserC a where
