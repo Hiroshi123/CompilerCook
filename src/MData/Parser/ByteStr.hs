@@ -70,11 +70,47 @@ satisfys bs =
   satisfys' l ( bs /= )
   where l = BS.length bs
   
-
 -- many is going to be ended when many1 returns empty list
   
 char :: BS.ByteString -> Parser BS.ByteString
 char c = satisfy (c ==)
+
+char_ :: String -> Parser BS.ByteString
+char_ x =
+  (<->) **>
+  char (BC.pack x)
+  <** (<->)
+  
+char__ :: BC.ByteString -> Parser BC.ByteString
+char__ c =
+  case (sCap c,lCap c) of
+       (True, _ )   -> satisfy ( c == ) <|> satisfy ( a == )
+         where a = BS.pack [(BS.head c) - 32]               
+       ( _ , True ) -> satisfy ( c == ) <|> satisfy ( a == )
+         where a = BS.pack [(BS.head c) + 32]
+       otherwise    -> satisfy ( c == )
+       
+                       
+string__ :: BC.ByteString -> Parser BS.ByteString
+string__ "" = r' ""
+string__ s = 
+  (char__ h) >==
+  (\_ -> (string__ t) >==
+         (\_ -> (r' s))
+  )
+  where h = BS.singleton (BS.head s)
+        t = BS.tail s
+        
+            
+  -- case sCap x of
+  --   True      -> satisfy ( lCap ( BS.pack [(BS.head x) - 32] ) || sCap x )
+  --   otherwise -> satisfy ( sCap ( BS.pack [(BS.head x) + 32] ) || lCap x )
+        
+            
+--char__ :: String -> Parser BS.ByteString
+--char__ x = satisfy (c-32)
+    
+--cap_d_char = satisfy capLS
 
 stringNot :: BS.ByteString -> Parser BS.ByteString
 stringNot "" = r' ""
@@ -148,8 +184,42 @@ bool = bool' >==
        70  -> r' False
   )
   
+--tab = satisfy (BC.pack "")
+
+one_of x = satisfy (\a -> elem a x )
+
+tab_sapce = many (one_of x)
+  where x = fmap BC.pack [" ","\t"]
   
+tab_sapce_sem = many (one_of x)
+  where x = fmap BC.pack [" ","\t",";"]
+  
+            
 skip_space :: Parser BS.ByteString
 skip_space = many $ satisfy ((BC.pack " ") == )
 
-(<->) = skip_space
+(<->) =
+  tab_sapce -- <|> commment (BC.pack "\\")
+  --skip_space
+  
+(<-:>) =
+  tab_sapce_sem
+  
+anyLetters =
+  (<->) **>
+  many1 (satisfy digitLetter_)
+  <** (<->)
+  
+  
+-- commment will end on \n
+comment x =
+  string x **> many item **> string "\n"
+  
+  
+jump :: [Char] -> Parser BC.ByteString  
+jump s =
+  (<->) **>
+  string (BC.pack s)
+  <|> (<->)
+
+  

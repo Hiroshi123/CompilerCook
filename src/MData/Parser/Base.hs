@@ -166,27 +166,37 @@ p <|> q
         
 sCap :: BS.ByteString -> Bool
 sCap x = (97 <= a && a <= 122)
-         where a = BS.head x
-               
-               
-                   
+         where a = BS.head x               
+                                 
 lCap :: BS.ByteString -> Bool
 lCap x = (65 <= a && a <= 90)
          where a = BS.head x
-               
-               
-letter :: BS.ByteString -> Bool           
+
+underbar :: BS.ByteString -> Bool
+underbar x = BS.head x == 95
+
+dot :: BS.ByteString -> Bool
+dot x = BS.head x == 46
+
+letter :: BS.ByteString -> Bool  
 letter x = sCap x || lCap x
+
+letter_ :: BS.ByteString -> Bool           
+letter_ x = sCap x || lCap x || underbar x || dot x
 
 digitLetter :: BS.ByteString -> Bool               
 digitLetter x = digit x || letter x
 
-                
+digitLetter_ :: BS.ByteString -> Bool               
+digitLetter_ x = digit x || letter_ x
+                 
 digit :: BS.ByteString -> Bool
 digit x = (48 <= a && a <= 57)
          where a = BS.head x
                
-                   
+               
+    
+                 
 ------------------------------------------------------------------------------------
 
 coverList :: Parser a -> Parser [a]

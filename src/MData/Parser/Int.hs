@@ -83,8 +83,12 @@ bsToNum' d x =
             
 bs1ToNum :: BS.ByteString -> Int
 bs1ToNum x = fromIntegral ( BS.head x - 48 )
+
              
 num :: Parser Int
-num = many1 ( satisfy (digit) ) >== (\x -> r' $ bsToNum x)
-
-      
+num =
+  (<->) **>
+  many1 ( satisfy (digit) ) >== (\x -> r' $ bsToNum x)
+  **< (<->)
+  
+  
