@@ -1,5 +1,5 @@
 
-module MData.M where
+module Control_.M where
 
 class M m where
   r'    :: a -> m a
@@ -19,4 +19,21 @@ class (M m) => MPlus m where
 
   --(>>>) :: m a -> m b -> m b
 
+instance M (Either a) where
+  r' x = Right x
+  Left x  >== _ = Left x
+  Right x >== f = f x
   
+instance M IO where
+  r' = return
+  action >== f =
+    do
+      x <- action
+      f x
+      
+instance M [] where
+  r' x = [x]
+  f1 >== f2 = concatMap f2 f1
+  
+  
+              
