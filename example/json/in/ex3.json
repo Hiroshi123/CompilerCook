@@ -1,0 +1,27 @@
+
+
+[
+    {
+	"InstanceId": "i-XXXXXXXX",
+	"ImageId": "ami-YYYYYYYY",
+	"LaunchTime": "2015-05-28T08:30:10.000Z",
+	"Tags": [
+	    {
+		"Value": "portnoydev-emr",
+		"Key": "Name"
+	    },
+	    {
+		"Value": "j-ZZZZZZZZZZZZ",
+		"Key": "aws:elasticmapreduce:job-flow-id"
+	    },
+	    {
+		"Value": "CORE",
+		"Key": "aws:elasticmapreduce:instance-group-role"
+	    }
+	]
+    },
+    {
+	
+    }
+    
+]
