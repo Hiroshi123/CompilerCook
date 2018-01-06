@@ -1,8 +1,10 @@
 
 
-module Parser_.Base.ByteStr where
+module Parser_.Base_.ByteStr where
 
-import Parser_.Base.Base
+import Parser_.Base_.Base
+import Parser_.Base_.Bool
+
 
 import qualified Data.ByteString as BS --(ByteString,unpack)
 import qualified Data.ByteString.Char8 as BC --()
@@ -42,6 +44,20 @@ instance ParserC BS.ByteString where
 
 -- bottom parser which will produce bytestring Type
 
+
+item0_ :: Parser BS.ByteString
+item0_ =
+  Parser $
+  \x -> case x of
+          ""  -> []
+          _   -> [(BS.singleton $ BS.head x,x)]
+
+item0 :: Parser BS.ByteString
+item0 =
+  Parser $
+  \x -> [(BS.singleton $ BS.head x,x)]
+
+
 item :: Parser BS.ByteString
 item =
   Parser $
@@ -49,13 +65,38 @@ item =
           ""  -> []
           _   -> [(BS.singleton $ BS.head x,BS.tail x)]
 
+not_ =
+  Parser $
+  \x -> case x of
+          ""  -> [(BS.singleton $ BS.head x,BS.tail x)]
+          _   -> []
           
+
+  
 items :: Int -> Parser BS.ByteString
 items a =
   Parser $
   \x -> case x of
           ""  -> []
           _   -> [(BS.take a x ,BS.drop a x)]
+          
+          
+every  s = every1 s <|> ( end >== (\x -> r' s) )
+every1 s = 
+  (char s) >==
+  (\_ -> (every s) >==
+         (\_ -> (r' s))
+  )
+  
+  
+end :: Parser Bool -- BS.ByteString
+end =
+  Parser $
+  \x -> case x of
+          ""  -> [(True,"")]
+          _   -> []
+          
+                 
           
           
 satisfys' :: Int -> (BS.ByteString -> Bool) -> Parser BS.ByteString
@@ -76,6 +117,7 @@ char_ x =
   (<->) **>
   char (BC.pack x)
   <** (<->)
+  
   
 char__ :: BC.ByteString -> Parser BC.ByteString
 char__ c =
@@ -108,26 +150,19 @@ string__ s =
     
 --cap_d_char = satisfy capLS
 
-
-between a b c =  
-  (<->) **> a **>  (<->) **>
-  b **<  (<->) **< c **< (<->)
-  
-with_space x = 
-  (<->) **> x **< (<->)
-  
-
 stringNot :: BS.ByteString -> Parser BS.ByteString
 stringNot "" = r' ""
 stringNot s = 
   ( satisfy (h /=) ) >==
-  (\_ -> (stringNot t) >==
-         (\_ -> (r' s))
+  (\x -> (stringNot t) >==
+         (\y -> (r' $ y))
   )
   where h = BS.singleton $ BS.head s
         t = BS.tail s
-        
 
+        
+    
+    
 satisfy :: (BS.ByteString -> Bool) -> Parser BS.ByteString
 satisfy f = item >== (\x -> if f x then r' x else (<>))
 
@@ -143,7 +178,7 @@ string s =
   )
   where h = BS.singleton $ BS.head s
         t = BS.tail s
-
+        
         
 getALine =
   many (satisfys' 3 ( ( "bbb" :: BS.ByteString ) /= ))
@@ -158,27 +193,51 @@ getALine =
 ------------------------------------------------------------
 ------ Useful functions for general parsing
 
+quote :: Parser BS.ByteString
+quote = squote <|> dquote
 
-str :: Parser BS.ByteString
-str =
+squote :: Parser BS.ByteString
+squote = between a b a
+  where a = char (BS.pack [39])
+        b = anyLetters -- no many version
+        
+        
+dquote :: Parser BS.ByteString
+dquote = between a b a
+  where a = char (BS.pack [34])
+        b = many anyLetters
+        
+str = dquote
+      
+between a b c =  
+  (<->) **> a **>  (<->) **>
+  b **< (<->) **< c **< (<->)
+
+
+-- between a b c =  
+--   (<->) **> a **>  (<->) **>
+--   b <** c **< (<->)
   
-  (<->) **>
-  char (BS.pack [34])
-  **>  (<->) **>
-  --many1 (satisfy letter)
-  many anyLetters
-  **<  (<->) **<
-  char (BS.pack [34])
-   **< (<->)
   
+-- str :: Parser BS.ByteString
+-- str =  
+--   (<->) **>
+--   char (BS.pack [34])
+--   **>  (<->) **>
+--   --many1 (satisfy letter)
+--   many anyLetters
+--   **<  (<->) **<
+--   char (BS.pack [34])
+--    **< (<->)
+
+
+true_  = ( string "True"  <|> string "true"  ) >== (\_ -> r' "T")
+false_ = ( string "False" <|> string "false" ) >== (\_ -> r' "F")
+
   
 bool' :: Parser BS.ByteString
-bool' =
-  (<->) **>
-  ( string "True" <|> string "true" ) >== (\_ -> r' "T")
-  <|>
-  ( string "False" <|> string "false" ) >== (\_ -> r' "F")
-  **< (<->)
+bool' = true_ <|> false_
+  
   
 bool :: Parser Bool
 bool = bool' >==
@@ -187,6 +246,7 @@ bool = bool' >==
        84  -> r' True
        70  -> r' False
   )
+  
   
 --tab = satisfy (BC.pack "")
 
@@ -204,7 +264,9 @@ skip_space = many $ satisfy ((BC.pack " ") == )
 
 (<->) =
   tab_sapce -- <|> commment (BC.pack "\\")
+  
   --skip_space
+  
   
 (<-:>) =
   tab_sapce_sem
@@ -225,7 +287,21 @@ jump s =
   (<->) **>
   string (BC.pack s)
   <|> (<->)
-
+  
   
 comma :: Parser BS.ByteString
 comma = satisfy ( BC.pack "," == )
+
+
+with_space x = 
+  (<->) **> x **< (<->)
+  
+-- blank_till_end =
+--   (\x ->
+--      case x of
+--        [] -> 
+       
+
+--       )
+
+  

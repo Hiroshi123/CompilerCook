@@ -1,10 +1,10 @@
 
+module Parser_.Base_.Int where
 
-module Parser_.Base.Int where
-
-import Parser_.Base.Base
-import Parser_.Base.ByteStr
-import Parser_.Base.List
+import Parser_.Base_.Base
+import Parser_.Base_.Bool
+import Parser_.Base_.ByteStr
+import Parser_.Base_.List
 
 
 import qualified Data.ByteString as BS --(ByteString,unpack)
@@ -23,7 +23,6 @@ instance ParserC Int where
            (\y -> r' $ x * y )
     )
     
-    
   many x =  many1 x  <|> r' 0
   
   -- many1 is going to be ended when many1 returns empty list
@@ -38,8 +37,9 @@ instance ParserC Int where
   
   --satisfy :: (BS.ByteString -> Bool) -> Parser BS.ByteString
   --satisfy f = item >== (\x -> if f x then r' 0 else r' 0)
-  
-  
+
+            
+            
 itemN :: Parser Int
 itemN = Parser
   $ \x -> case x of
@@ -57,9 +57,6 @@ num'' =
   
 --num' :: Parser [Int]
 num' = coverList num'' <**> num' <|> r' []  -- (<>) -- []
-
---num :: Parser Int
---num x = x >== (\x -> r' $ foldl (\a y -> 10 * a + y) 0 x )
 
 --hei "" = 0
 --hei x = foldl (\a y -> 10 * ( fromIntegral $ BS.head a - 48 ) + y ) 0 x

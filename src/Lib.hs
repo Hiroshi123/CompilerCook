@@ -1,46 +1,50 @@
+{-# LANGUAGE OverloadedStrings #-}
 
 module Lib
-    ( someFunc
+    (
+      someFunc
     ) where
 
 
-import MData.Parser.Base
+-- import MData.Parser.Base
 
 -- Either one should be picked up
 
 --import MData.Parser.ByteStr
 
-import MData.M
-import MData.Parser.List
-import MData.Parser.ByteStr
-import MData.Parser.Int
+-- import MData.M
+-- import MControl.State
 
-import MData.Parser.Csv
-import MData.Parser.Json
-import MData.Parser.BNF
+-- import MData.Parser.List
+-- import MData.Parser.ByteStr
+-- import MData.Parser.Int
+
+-- import MData.BNF.ProtoBuff
+
+--import MData.Parser.Csv
+--import MData.Parser.Json
+--import MData.Parser.BNF
+
+--import MData.Parser.GhcData
+
+--import MData.BNF.MessagePack
+
+--import MData.BNF.Lisp 
+
+-- import MData.Parser.Lisp
+-- import MData.BNF.Lisp2
 
 
-import qualified Data.ByteString as BS --(ByteString,unpack)
-import qualified Data.ByteString.Char8 as BC --()
+-- import qualified Data.ByteString as BS --(ByteString,unpack)
+-- import qualified Data.ByteString.Char8 as BC --()
 
+-- import System.IO
 
---input = BS.getLine >>= (\x -> return $ parse (manyL (itemL) <**> itemL) x)
+-- ff :: Parser [BS.ByteString]
+-- ff =  many1 $ stringL $ BC.pack ""
 
---inpu :: [(BS.ByteString,)]
+-- inp = BS.getLine >>= (\x -> return $ parse ff x)
 
-ff :: Parser [BS.ByteString]
-ff =  many1 $ stringL $ BC.pack "abcd"
-
-inp' = BS.getLine >>= (\x -> return $ parse record x)
-
-inp'' = BS.getLine >>= (\x -> return $ parse itemN x)
-
---inp = BS.getLine >>= (\x -> return $ parse num x)
-
-inp = BS.getLine >>= (\x -> return $ parse jvalue x)
-
---inpu = BS.getLine >>= (\x -> return $ (parse (itemL <**> (string $ BC.pack "abc"))) x)
---inpu = BS.getLine >>= (\x -> return $ parse (strings (BC.pack "abc")) x)
 
 someFunc :: IO ()
 someFunc = putStrLn "someFunc"

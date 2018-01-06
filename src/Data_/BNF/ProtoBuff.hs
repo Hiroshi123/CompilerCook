@@ -1,5 +1,5 @@
 
-module MData.BNF.ProtoBuff where
+module Data_.BNF.ProtoBuff where
 
 import qualified Data.ByteString as BS --(ByteString,unpack)
 import qualified Data.ByteString.Char8 as BC --(ByteString,unpack)

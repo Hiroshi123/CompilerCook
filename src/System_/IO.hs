@@ -9,9 +9,7 @@ import System.Process
 import qualified Data.ByteString as BS --(ByteString,unpack)
 import qualified Data.ByteString.Char8 as BC
 
-
 import Parser_.Base.Preprocess
-
 
 hGetLines :: Handle -> IO [BC.ByteString]
 hGetLines h =
@@ -22,9 +20,9 @@ hGetLines h =
         False ->
           BS.hGetLine h >>=
           (\x ->
-             let xx = comment_rem x
-             in hGetLines h >>=
-                (\xs -> return (xx:xs))
+             --let xx = comment_rem x
+             hGetLines h >>=
+                (\xs -> return (x:xs))
           )
   )
   
@@ -36,3 +34,5 @@ save fn c =
      withFile (cd ++ "/" ++ fn) WriteMode (\h -> BS.hPutStr h $ BC.pack c)
      -- (\h -> BS.hPutStr h $ BC.pack contents) -- (\h -> BS.hPutStr h $ BC.pack contents)
   )
+  
+  

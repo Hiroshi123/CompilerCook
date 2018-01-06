@@ -1,9 +1,11 @@
 
 
-module Parser_.Base.List where
+module Parser_.Base_.List where
 
-import Parser_.Base.Base
-import Parser_.Base.ByteStr
+import Parser_.Base_.Base
+import Parser_.Base_.Bool
+
+import Parser_.Base_.ByteStr
 
 import qualified Data.ByteString as BS --(ByteString,unpack)
 import qualified Data.ByteString.Char8 as BC --()
@@ -64,17 +66,9 @@ stringL s = (charL h) **> (stringL t) **> r' [s]
 --      )
 --   )
 
-
-
 sepby f s = sepby1 f s <|> r' []
-
 sepby1 f s = coverList f <**> many ( s **> coverList f )
 
-  
-fh a b =
-  a >== (\x -> b >== (\y -> r' y) )
-  
-        
 --------------------------------------------
 
 bList :: Parser [BS.ByteString]

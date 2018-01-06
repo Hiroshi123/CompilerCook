@@ -29,7 +29,6 @@ import Data_.BNF.Json
 -- instance ParserC JValue where  
 --   many x =  many1 x  <|> r' ""
 --   many1 p = p >== (\x -> many p >== (\y -> r' $ BS.append x y) )
-
        
 -- jvalues = jvalue
 
@@ -42,6 +41,7 @@ jelem = jbool <|> jstr <|> jnum
 
 jbool :: Parser JValue
 jbool = bool >== (\x -> r' $ JBool x )
+
   
 jnum :: Parser JValue
 jnum  = num >== (\x -> r' $ JInt x )

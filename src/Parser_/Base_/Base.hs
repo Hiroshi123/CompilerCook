@@ -1,20 +1,18 @@
 
-module Parser_.Base.Base where
+module Parser_.Base_.Base where
 
 import qualified Data.ByteString as BS --(ByteString,unpack)
 import qualified Data.ByteString.Char8 as BC
-
 
 --import Data.Char
 import Data.Word
 
 -- myModule
 
---import MData.M
 import Control_.M
 
-data Parser a = Parser (BS.ByteString -> [(a,BS.ByteString)])
 
+data Parser a = Parser (BS.ByteString -> [(a,BS.ByteString)])
 
 instance M Parser where
   -- return should cover Monad over its 1st argumennt.
@@ -58,8 +56,7 @@ instance M Parser where
               [] -> []
               a  -> case parse f2 (snd (head a) ) of
                       [] -> []
-                      b  ->  [ ( fst (head a) , snd (head b)) ]
-                      
+                      b  ->  [ ( fst (head a) , snd (head b)) ]                      
                       
   -- right function would be firstly applied.
   --the value which would be returned would be second left function
@@ -106,17 +103,17 @@ p <|-> q
 parse :: Parser a -> BS.ByteString -> [(a,BS.ByteString)]
 parse (Parser f) s = f s
 
+--init :: Parser [a] 
+init_ st = Parser $ \x -> [(st,x)]
+
 -- getEval  :: [(a,BS.ByteString)] -> [a]
 -- getEval s =
 --   case parse f s of
 --     [] -> 
---     [] ->      
-      
+--     [] -> 
+                     
 -- getState :: Parser a -> ByteString
 -- getState (Parser f) s = f s
-
-
-
   
 class ParserC a where
   --conjunction which  will let bind opeartion easy to be used. 
@@ -158,60 +155,12 @@ p <|> q
           
 ------------------------------------------------------------
 
--- following functions are to check if a given bytestring is in a certain range or not.
-
-        
-sCap :: BS.ByteString -> Bool
-sCap x = (97 <= a && a <= 122)
-         where a = BS.head x               
-                                 
-lCap :: BS.ByteString -> Bool
-lCap x = (65 <= a && a <= 90)
-         where a = BS.head x
-
-underbar :: BS.ByteString -> Bool
-underbar x = BS.head x == 95
-
-dot :: BS.ByteString -> Bool
-dot x = BS.head x == 46
-
-haihun :: BS.ByteString -> Bool
-haihun x = BS.head x == 45
-
-colon :: BS.ByteString -> Bool
-colon x = BS.head x == 58
-
-semicolon :: BS.ByteString -> Bool
-semicolon x = BS.head x == 59
-
-  
-letter :: BS.ByteString -> Bool  
-letter x = sCap x || lCap x
-
-letter_ :: BS.ByteString -> Bool     
-letter_ x = sCap x || lCap x || underbar x || haihun x || dot x || colon x || semicolon x 
-
-digitLetter :: BS.ByteString -> Bool               
-digitLetter x = digit x || letter x
-
-digitLetter_ :: BS.ByteString -> Bool               
-digitLetter_ x = digit x || letter_ x 
-                 
-digit :: BS.ByteString -> Bool
-digit x = (48 <= a && a <= 57)
-         where a = BS.head x
                
-               
-    
-                 
 ------------------------------------------------------------------------------------
 
 coverList :: Parser a -> Parser [a]
 coverList x =
   x >== (\a -> r' [a] )
   
--- inp = BS.getLine >>= (\x -> return $ parse (coverList escaped) x)
-
-
   
 
