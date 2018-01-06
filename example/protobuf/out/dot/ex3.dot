@@ -1,0 +1,98 @@
+
+digraph graph_name {
+  graph [
+    charset = "UTF-8",
+    bgcolor = "#EDEDED",
+    rankdir = TB,
+    nodesep = 1.1,
+    ranksep = 1.05
+  ];
+  
+  node [
+    shape = record,
+    fontname = "Migu 1M",
+    fontsize = 12,
+  ];
+
+  //optional int64 i = 3;               // int
+  //optional bytes s = 4;               // UTF-8 string
+  //optional TensorProto t = 5;         // tensor value
+  //optional GraphProto g = 6;          // graph
+  
+  //repeated float floats = 7;          // list of floats
+  //repeated int64 ints = 8;            // list of ints
+  //repeated bytes strings = 9;         // list of UTF-8 strings
+  //repeated TensorProto tensors = 10;  // list of tensors
+  //repeated GraphProto graphs = 11;    // list of graph
+  
+  // node define
+  
+  alpha [label = "{ <pl>left|{<pc>optional|{string|float|bottom}|{name|f|a}}|<pr>right } " ];
+  //alpha [label = " <pl>left|center|<pr>right"];
+
+
+  beta  [label = "<pl>left|<pc>center|<pr>right"];
+  gamma [label = "left|center|<pr>right"];
+  attribute
+	[label =
+  	"{ <pc> AttributeProto 
+	| { optional | { string | float | bottom } | {name | f | a } } 
+	| { <pl> repeated | { float  | int64 | bytes  } | {name | f | a } } 
+	| { <pr> repeated | { <tens> TensorProto | GraphProto} } 
+	} 
+	"];
+	
+	//"{ loptional | int32 }|{ optional | float }|{ repeated | int32 | p | 1 }"
+	
+
+  //repeated NodeProto node = 1;
+  
+  variablename [label =
+       "{  message Name 
+	  | { optional | { type1 | type2 } | { var1 | var2 }  }
+	  | { required | { type1 | type2 } | { var1 | var2 }  }
+       	}"
+  ];
+  
+  // v_name [ label = "{   }" ]
+  // v_name ( enum | one_of )
+  
+  // contents of label "A | B | C "
+  // contents of label "{ A | B | C }"
+
+  // variable-name label field_array
+  // [Char] [Char] [[[Char]]]
+
+  // [ -> {
+  // ] -> }
+  // next is not empty, put a seperator
+  
+
+  // {
+  //   private className 
+  // | { static private type var1 value } [a,[b1,b2],[c1,c2]]
+  // | { static private type var2 value } [a,b,c]
+  // | { static private f_name return_type [arg1,arg2,arg3] }
+  // }
+  
+  // The name of the graph.
+  //optional string name = 2;   // namespace Graph
+  //repeated TensorProto initializer = 5;
+  //optional string doc_string = 10;
+  //repeated ValueInfoProto input = 11;
+  //repeated ValueInfoProto output = 12;
+  
+  //repeated ValueInfoProto value_info = 13;
+  
+  tensor [label = "{ <pa> TensorProto | Hei | You }" ];
+  epsilon [label = "{top|<pm>middle|bottom}"];
+  
+  // edge define
+  alpha:pl -> beta:pl [ label = "a-b", weight = 2.0];
+  alpha:pr -> gamma:pr [label = "a-g", weight = 1.0];
+  beta:pc -> epsilon:pm [label = "b-e"];
+  gamma -> attribute:pc [label = "g-d"];
+  attribute:tens -> tensor:pa;
+  
+}
+

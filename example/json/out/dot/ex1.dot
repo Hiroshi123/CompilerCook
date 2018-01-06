@@ -1,0 +1,178 @@
+digraph NNNN {
+graph [
+charset = "UTF-8"
+bgcolor = "#EDEDED"
+rankdir = TB
+nodesep = 1.1
+ranksep = 1.05
+];
+node [
+shape = record
+fontname = "Migu 1M"
+fontsize = 12
+];
+edge [
+  color = white
+];
+id_1
+ [ 
+ label = 
+ "{ 
+ | {  [key] op |  String |  Placeholder }
+ | {  [key] attr | <attr> Jobject }
+ | {  [key] name |  String |  images_placeholder }
+ }"
+ ]
+id_2
+ [ 
+ label = 
+ "{ 
+ | {  [key] dtype | <dtype> Jobject }
+ | {  [key] shape | <shape> Jobject }
+ | {  [key] _output_shapes | <_output_shapes> Jobject }
+ }"
+ ]
+id_11
+ [ 
+ label = 
+ "{ 
+ | {  [key] list | <list> Jobject }
+ }"
+ ]
+id_12
+ [ 
+ label = 
+ "{ 
+ | {  [key] shape | <shape> Array }
+ }"
+ ]
+id_13
+ [ 
+ label = 
+ "{ 
+ | {  [0] | <0> Jobject }
+ }"
+ ]
+id_14
+ [ 
+ label = 
+ "{ 
+ | {  [key] dim | <dim> Array }
+ }"
+ ]
+id_15
+ [ 
+ label = 
+ "{ 
+ | {  [0] | <0> Jobject }
+ | {  [1] | <1> Jobject }
+ | {  [2] | <2> Jobject }
+ | {  [3] | <3> Jobject }
+ }"
+ ]
+id_19
+ [ 
+ label = 
+ "{ 
+ | {  [key] size |  String |  3 }
+ }"
+ ]
+id_18
+ [ 
+ label = 
+ "{ 
+ | {  [key] size |  String |  128 }
+ }"
+ ]
+id_17
+ [ 
+ label = 
+ "{ 
+ | {  [key] size |  String |  128 }
+ }"
+ ]
+id_16
+ [ 
+ label = 
+ "{ 
+ | {  [key] size |  String |  1 }
+ }"
+ ]
+id_4
+ [ 
+ label = 
+ "{ 
+ | {  [key] shape | <shape> Jobject }
+ }"
+ ]
+id_5
+ [ 
+ label = 
+ "{ 
+ | {  [key] dim | <dim> Array }
+ }"
+ ]
+id_6
+ [ 
+ label = 
+ "{ 
+ | {  [0] | <0> Jobject }
+ | {  [1] | <1> Jobject }
+ | {  [2] | <2> Jobject }
+ | {  [3] | <3> Jobject }
+ }"
+ ]
+id_10
+ [ 
+ label = 
+ "{ 
+ | {  [key] size |  String |  3 }
+ }"
+ ]
+id_9
+ [ 
+ label = 
+ "{ 
+ | {  [key] size |  String |  128 }
+ }"
+ ]
+id_8
+ [ 
+ label = 
+ "{ 
+ | {  [key] size |  String |  128 }
+ }"
+ ]
+id_7
+ [ 
+ label = 
+ "{ 
+ | {  [key] size |  String |  1 }
+ }"
+ ]
+id_3
+ [ 
+ label = 
+ "{ 
+ | {  [key] type |  String |  DT_FLOAT }
+ }"
+ ]
+id_1:attr -> id_2;
+id_2:_output_shapes -> id_11;
+id_11:list -> id_12;
+id_12:shape -> id_13;
+id_13:0 -> id_14;
+id_14:dim -> id_15;
+id_15:3 -> id_19;
+id_15:2 -> id_18;
+id_15:1 -> id_17;
+id_15:0 -> id_16;
+id_2:shape -> id_4;
+id_4:shape -> id_5;
+id_5:dim -> id_6;
+id_6:3 -> id_10;
+id_6:2 -> id_9;
+id_6:1 -> id_8;
+id_6:0 -> id_7;
+id_2:dtype -> id_3;
+}

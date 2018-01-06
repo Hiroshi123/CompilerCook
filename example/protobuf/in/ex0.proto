@@ -1,0 +1,21 @@
+
+message A {
+	
+	// this is comment
+	optional Int32 a_a1 = 1;
+	required int32 b1 = 2;
+	required float c1 = 3;
+	
+};
+
+message B {
+	
+	// this is comment
+	optional Int32 a = 1;
+	required int32 b = 2;
+	required float c = 3;
+	
+};
+
+
+

@@ -1,0 +1,29 @@
+
+digraph graph_name {
+  graph [
+    charset = "UTF-8",
+    bgcolor = "#EDEDED",
+    rankdir = TB,
+    nodesep = 1.1,
+    ranksep = 1.05
+  ];
+
+  node [
+    shape = record,
+    fontname = "Migu 1M",
+    fontsize = 12,
+  ];
+
+  // node define
+  alpha [label = "<pl>left|center|<pr>right"];
+  beta [label = "<pl>left|<pc>center|<pr>right"];
+  gamma [label = "left|center|<pr>right"];
+  delta [label = "{left|{<pc>center|{top|middle|bottom}}|right}}"];
+  epsilon [label = "{top|<pm>middle|bottom}"];
+
+  // edge define
+  alpha:pl -> beta:pl [ label = "a-b", weight = 2.0];
+  alpha:pr -> gamma:pr [label = "a-g", weight = 1.0];
+  beta:pc -> epsilon:pm [label = "b-e"];
+  gamma -> delta:pc [label = "g-d"];
+}

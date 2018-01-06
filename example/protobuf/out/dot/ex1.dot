@@ -1,0 +1,67 @@
+digraph NNNN {
+graph [
+ordering="out";
+charset = "UTF-8";
+label = "noddd",
+labelloc = "t",
+labeljust = "c",
+bgcolor = "#343434",
+fontcolor = white,
+fontsize = 18,
+style = "filled",
+rankdir = TB,
+margin = 0.2,
+nodesep = 0.5,
+ranksep = 0.8,
+compound = true
+];
+node [
+colorscheme = rdylgn11,
+fontname = "Migu 1M",
+color = 7,
+fontsize = 12,
+fontcolor = 6,
+fillcolor = 11,
+margin = 0.05,
+style = "solid,filled"
+];
+node [
+colorscheme = rdylgn11,
+fontname = "Migu 1M",
+color = 7,
+fontsize = 12,
+fontcolor = 6,
+fillcolor = 11,
+margin = 0.05,
+style = "solid,filled"
+];
+edge [
+  color = white
+];
+subgraph cluster0 { 
+  label = " message A " ;
+  labelloc = "t";
+  labeljust = "l";
+  fillcolor = "#888888";
+  A [label = "A", shape = diamond];
+  a_a1 [label = "a_a1", shape = diamond];
+  b1 [label = "b1", shape = diamond];
+  c1 [label = "c1", shape = diamond];
+A -> a_a1;
+A -> b1;
+A -> c1;
+ };
+subgraph cluster1 { 
+  label = " message B " ;
+  labelloc = "t";
+  labeljust = "l";
+  fillcolor = "#888888";
+  B [label = "B", shape = diamond];
+  a [label = "a", shape = diamond];
+  b [label = "b", shape = diamond];
+  c [label = "c", shape = diamond];
+B -> a;
+B -> b;
+B -> c;
+ };
+}

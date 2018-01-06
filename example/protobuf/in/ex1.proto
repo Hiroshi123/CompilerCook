@@ -1,0 +1,41 @@
+
+
+message A {
+	
+	// this is comment
+	optional Int32 a_a1 = 1;
+	required int32 b = 2;
+	oneof union1 {
+	      Int32 a = 1;
+	      Bytes b = 2;
+	};
+};
+
+
+enum AA {
+     A = 1;
+     B = 2;
+};
+
+message B {
+	message X {
+		optional Bytes a = 1;
+	};
+	optional Int32 a = 1;//comment
+	required Int32 b = 2;
+	
+}
+
+message C {
+	
+	optional B a = 1;
+	required Int32 b = 2;
+	enum enum_ex {
+	     a = 1;
+	     b = 2;
+	};
+}
+
+
+
+
