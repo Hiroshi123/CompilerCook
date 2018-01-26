@@ -10,6 +10,17 @@ semantic analyzer & optmization & intermidiate (assembly) code generation.
 
 Note this is just for my learning.
 
+** Basic Scheme
+
+Normal translation
+
+* CST (of languge A) -> AST (of language A) -> (LLVM | TVM) -> AST (assembly language B)
+
+Language translation
+
+* CST (of languge A) -> AST (of language A) -> (LLVM | TVM) -> AST (of language B) -> CST (of language B)
+
+
 subjects which are parsed
 
 ### data format
@@ -38,6 +49,6 @@ None of them are yet complete.
 
 * implementation without any built-in parser library
 * implementation without "do"
-* Each backend is supposed to be llvm IR
+
 
 
